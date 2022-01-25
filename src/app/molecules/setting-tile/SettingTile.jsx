@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import './SettingTile.scss';
+// import './SettingTile.scss';
 
 import Text from '../../atoms/text/Text';
 

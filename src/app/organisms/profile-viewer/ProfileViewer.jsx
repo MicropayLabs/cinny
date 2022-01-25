@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
-import './ProfileViewer.scss';
+// import './ProfileViewer.scss';
 
 import { twemojify } from '../../../util/twemojify';
 

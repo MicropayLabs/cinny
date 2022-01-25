@@ -3,7 +3,7 @@ import React, {
   useState, useEffect, useCallback, useRef,
 } from 'react';
 import PropTypes from 'prop-types';
-import './Message.scss';
+// import './Message.scss';
 
 import { getShortcodeToCustomEmoji } from '../../organisms/emoji-board/custom-emoji';
 import { twemojify } from '../../../util/twemojify';

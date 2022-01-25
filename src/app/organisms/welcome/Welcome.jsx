@@ -1,5 +1,5 @@
 import React from 'react';
-import './Welcome.scss';
+// import './Welcome.scss';
 
 import Text from '../../atoms/text/Text';
 

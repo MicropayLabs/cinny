@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
-import './CreateRoom.scss';
+// import './CreateRoom.scss';
 
 import { twemojify } from '../../../util/twemojify';
 import initMatrix from '../../../client/initMatrix';

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import './Chip.scss';
+// import './Chip.scss';
 
 import Text from '../text/Text';
 import RawIcon from '../system-icons/RawIcon';

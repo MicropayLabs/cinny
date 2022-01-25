@@ -11,10 +11,7 @@ import Button from '../../atoms/button/Button';
 import ImageUpload from '../../molecules/image-upload/ImageUpload';
 import Input from '../../atoms/input/Input';
 
-import PencilIC from '../../../../public/res/ic/outlined/pencil.svg';
-import { confirmDialog } from '../../molecules/confirm-dialog/ConfirmDialog';
-
-import './ProfileEditor.scss';
+// import './ProfileEditor.scss';
 
 // TODO Fix bug that prevents 'Save' button from enabling up until second changed.
 function ProfileEditor({ userId }) {

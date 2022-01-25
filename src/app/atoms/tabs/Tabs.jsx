@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import './Tabs.scss';
+// import './Tabs.scss';
 
 import Button from '../button/Button';
 import ScrollView from '../scroll/ScrollView';

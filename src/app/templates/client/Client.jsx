@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
-import './Client.scss';
+import React, { useState, useEffect } from 'react';
+// import './Client.scss';
 
 import { initHotkeys } from '../../../client/event/hotkeys';
 import { initRoomListListener } from '../../../client/event/roomList';

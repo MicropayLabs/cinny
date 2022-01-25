@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import './RoomIntro.scss';
+// import './RoomIntro.scss';
 
 import colorMXID from '../../../util/colorMXID';
 

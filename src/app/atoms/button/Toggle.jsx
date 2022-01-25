@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import './Toggle.scss';
+// import './Toggle.scss';
 
 function Toggle({ isActive, onToggle, disabled }) {
   const className = `toggle${isActive ? ' toggle--active' : ''}`;

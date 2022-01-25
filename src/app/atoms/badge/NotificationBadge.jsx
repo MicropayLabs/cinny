@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import './NotificationBadge.scss';
+// import './NotificationBadge.scss';
 
 import Text from '../text/Text';
 
