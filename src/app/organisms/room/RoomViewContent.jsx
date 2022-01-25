@@ -5,7 +5,7 @@ import React, {
   useState, useEffect, useLayoutEffect, useCallback, useRef,
 } from 'react';
 import PropTypes from 'prop-types';
-import './RoomViewContent.scss';
+// import './RoomViewContent.scss';
 
 import EventEmitter from 'events';
 import dateFormat from 'dateformat';

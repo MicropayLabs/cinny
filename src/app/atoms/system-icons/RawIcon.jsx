@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import './RawIcon.scss';
+// import './RawIcon.scss';
 
 function RawIcon({
   color, size, src, isImage,

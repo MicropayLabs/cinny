@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
-import './RoomView.scss';
+// import './RoomView.scss';
 
 import EventEmitter from 'events';
 

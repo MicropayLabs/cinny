@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
-import './ImageUpload.scss';
+// import './ImageUpload.scss';
 
 import initMatrix from '../../../client/initMatrix';
 

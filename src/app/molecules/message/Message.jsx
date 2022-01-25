@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import PropTypes from 'prop-types';
-import './Message.scss';
+// import './Message.scss';
 
 import { twemojify } from '../../../util/twemojify';
 

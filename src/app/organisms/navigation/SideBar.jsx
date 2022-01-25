@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import './SideBar.scss';
+// import './SideBar.scss';
 
 import initMatrix from '../../../client/initMatrix';
 import cons from '../../../client/state/cons';
