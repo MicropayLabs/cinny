@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-// import './IconButton.scss';
+
 
 import RawIcon from '../system-icons/RawIcon';
 import Tooltip from '../tooltip/Tooltip';

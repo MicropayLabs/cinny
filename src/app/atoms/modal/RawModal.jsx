@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-// import './RawModal.scss';
+
 
 import Modal from 'react-modal';
 

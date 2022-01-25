@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-// import './RadioButton.scss';
+
 
 function RadioButton({ isActive, onToggle, disabled }) {
   if (onToggle === null) return <span className={`radio-btn${isActive ? ' radio-btn--active' : ''}`} />;

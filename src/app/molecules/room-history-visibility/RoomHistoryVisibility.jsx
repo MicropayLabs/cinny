@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
-// import './RoomHistoryVisibility.scss';
+
 
 import initMatrix from '../../../client/initMatrix';
 

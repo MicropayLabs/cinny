@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
-// import './PublicRooms.scss';
+
 
 import initMatrix from '../../../client/initMatrix';
 import cons from '../../../client/state/cons';

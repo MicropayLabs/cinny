@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
-// import './RoomViewHeader.scss';
+
 
 import { twemojify } from '../../../util/twemojify';
 import { blurOnBubbling } from '../../atoms/button/script';

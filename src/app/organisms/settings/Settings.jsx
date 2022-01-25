@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-// import './Settings.scss';
+
 
 import initMatrix from '../../../client/initMatrix';
 import cons from '../../../client/state/cons';
