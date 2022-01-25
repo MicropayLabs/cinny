@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-// import './RoomPermissions.scss';
+
 
 import initMatrix from '../../../client/initMatrix';
 import { getPowerLabel } from '../../../util/matrixUtil';

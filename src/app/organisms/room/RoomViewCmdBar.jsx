@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-// import './RoomViewCmdBar.scss';
+
 import parse from 'html-react-parser';
 import twemoji from 'twemoji';
 

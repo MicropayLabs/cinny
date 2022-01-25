@@ -47,7 +47,7 @@ class Settings extends EventEmitter {
   }
 
   setTheme(themeIndex) {
-    const appBody = document.getElementById('appBody');
+    const appBody = document.getElementById('root');
 
     appBody.classList.remove('system-theme');
     this.themes.forEach((themeName) => {

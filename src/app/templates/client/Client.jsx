@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-// import './Client.scss';
+
 
 import Text from '../../atoms/text/Text';
 import Spinner from '../../atoms/spinner/Spinner';
