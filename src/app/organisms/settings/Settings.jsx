@@ -194,37 +194,6 @@ function SecuritySection() {
 	);
 }
 
-function AboutSection() {
-	return (
-		<div className="settings-content settings__about">
-			<div className="set-about__branding">
-				<img width="60" height="60" src={CinnySVG} alt="Cinny logo" />
-				<div>
-					<Text variant="h2">
-						Cinny
-						<span
-							className="text text-b3"
-							style={{ margin: '0 var(--sp-extra-tight)' }}
-						>{`v${cons.version}`}</span>
-					</Text>
-					<Text>Yet another matrix client</Text>
-
-					<div className="set-about__btns">
-						<Button
-							onClick={() => window.open('https://github.com/ajbura/cinny')}
-						>
-							Source code
-						</Button>
-						<Button onClick={() => window.open('https://cinny.in/#sponsor')}>
-							Support
-						</Button>
-					</div>
-				</div>
-			</div>
-		</div>
-	);
-}
-
 function Settings({ isOpen, onRequestClose }) {
 	const settingSections = [
 		{
@@ -246,13 +215,6 @@ function Settings({ isOpen, onRequestClose }) {
 			iconSrc: LockIC,
 			render() {
 				return <SecuritySection />;
-			},
-		},
-		{
-			name: 'Help & About',
-			iconSrc: InfoIC,
-			render() {
-				return <AboutSection />;
 			},
 		},
 	];
