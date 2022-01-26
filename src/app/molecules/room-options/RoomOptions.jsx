@@ -11,63 +11,72 @@ import { markAsRead } from '../../../client/action/notifications';
 import { MenuHeader, MenuItem } from '../../atoms/context-menu/ContextMenu';
 import RoomNotification from '../room-notification/RoomNotification';
 
-import TickMarkIC from '../../../../public/res/ic/outlined/tick-mark.svg';
-import AddUserIC from '../../../../public/res/ic/outlined/add-user.svg';
-import LeaveArrowIC from '../../../../public/res/ic/outlined/leave-arrow.svg';
+const TickMarkIC = '/res/ic/outlined/tick-mark.svg';
+const AddUserIC = '/res/ic/outlined/add-user.svg';
+const LeaveArrowIC = '/res/ic/outlined/leave-arrow.svg';
 
 import { confirmDialog } from '../confirm-dialog/ConfirmDialog';
 
 function RoomOptions({ roomId, afterOptionSelect }) {
-  const mx = initMatrix.matrixClient;
-  const room = mx.getRoom(roomId);
-  const canInvite = room?.canInvite(mx.getUserId());
+	const mx = initMatrix.matrixClient;
+	const room = mx.getRoom(roomId);
+	const canInvite = room?.canInvite(mx.getUserId());
 
-  const handleMarkAsRead = () => {
-    markAsRead(roomId);
-    afterOptionSelect();
-  };
+	const handleMarkAsRead = () => {
+		afterOptionSelect();
+		if (!room) return;
+		const events = room.getLiveTimeline().getEvents();
+		mx.sendReadReceipt(events[events.length - 1]);
+	};
 
-  const handleInviteClick = () => {
-    openInviteUser(roomId);
-    afterOptionSelect();
-  };
-  const handleLeaveClick = async () => {
-    afterOptionSelect();
-    const isConfirmed = await confirmDialog(
-      'Leave room',
-      `Are you sure that you want to leave "${room.name}" room?`,
-      'Leave',
-      'danger',
-    );
-    if (!isConfirmed) return;
-    roomActions.leave(roomId);
-  };
+	const handleInviteClick = () => {
+		openInviteUser(roomId);
+		afterOptionSelect();
+	};
+	const handleLeaveClick = () => {
+		if (confirm('Are you really want to leave this room?')) {
+			roomActions.leave(roomId);
+			afterOptionSelect();
+		}
+	};
 
-  return (
-    <div style={{ maxWidth: '256px' }}>
-      <MenuHeader>{twemojify(`Options for ${initMatrix.matrixClient.getRoom(roomId)?.name}`)}</MenuHeader>
-      <MenuItem iconSrc={TickMarkIC} onClick={handleMarkAsRead}>Mark as read</MenuItem>
-      <MenuItem
-        iconSrc={AddUserIC}
-        onClick={handleInviteClick}
-        disabled={!canInvite}
-      >
-        Invite
-      </MenuItem>
-      <MenuItem iconSrc={LeaveArrowIC} variant="danger" onClick={handleLeaveClick}>Leave</MenuItem>
-      <MenuHeader>Notification</MenuHeader>
-      <RoomNotification roomId={roomId} />
-    </div>
-  );
+	return (
+		<>
+			<MenuHeader>
+				{twemojify(
+					`Options for ${initMatrix.matrixClient.getRoom(roomId)?.name}`
+				)}
+			</MenuHeader>
+			<MenuItem iconSrc={TickMarkIC} onClick={handleMarkAsRead}>
+				Mark as read
+			</MenuItem>
+			<MenuItem
+				iconSrc={AddUserIC}
+				onClick={handleInviteClick}
+				disabled={!canInvite}
+			>
+				Invite
+			</MenuItem>
+			<MenuItem
+				iconSrc={LeaveArrowIC}
+				variant="danger"
+				onClick={handleLeaveClick}
+			>
+				Leave
+			</MenuItem>
+			<MenuHeader>Notification</MenuHeader>
+			<RoomNotification roomId={roomId} />
+		</>
+	);
 }
 
 RoomOptions.defaultProps = {
-  afterOptionSelect: null,
+	afterOptionSelect: null,
 };
 
 RoomOptions.propTypes = {
-  roomId: PropTypes.string.isRequired,
-  afterOptionSelect: PropTypes.func,
+	roomId: PropTypes.string.isRequired,
+	afterOptionSelect: PropTypes.func,
 };
 
 export default RoomOptions;

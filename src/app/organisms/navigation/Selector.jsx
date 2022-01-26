@@ -6,6 +6,10 @@ import initMatrix from '../../../client/initMatrix';
 import cons from '../../../client/state/cons';
 import navigation from '../../../client/state/navigation';
 import { openReusableContextMenu } from '../../../client/action/navigation';
+import {
+	createSpaceShortcut,
+	deleteSpaceShortcut,
+} from '../../../client/action/room';
 import { getEventCords, abbreviateNumber } from '../../../util/common';
 import { joinRuleToIconSrc } from '../../../util/matrixUtil';
 
@@ -14,80 +18,138 @@ import RoomSelector from '../../molecules/room-selector/RoomSelector';
 import RoomOptions from '../../molecules/room-options/RoomOptions';
 import SpaceOptions from '../../molecules/space-options/SpaceOptions';
 
-import VerticalMenuIC from '../../../../public/res/ic/outlined/vertical-menu.svg';
+const HashIC = '/res/ic/outlined/hash.svg';
+const HashGlobeIC = '/res/ic/outlined/hash-globe.svg';
+const HashLockIC = '/res/ic/outlined/hash-lock.svg';
+const SpaceIC = '/res/ic/outlined/space.svg';
+const SpaceGlobeIC = '/res/ic/outlined/space-globe.svg';
+const SpaceLockIC = '/res/ic/outlined/space-lock.svg';
+const PinIC = '/res/ic/outlined/pin.svg';
+const PinFilledIC = '/res/ic/filled/pin.svg';
+const VerticalMenuIC = '/res/ic/outlined/vertical-menu.svg';
 
-import { useForceUpdate } from '../../hooks/useForceUpdate';
+function Selector({ roomId, isDM, drawerPostie, onClick }) {
+	const mx = initMatrix.matrixClient;
+	const noti = initMatrix.notifications;
+	const room = mx.getRoom(roomId);
+	let imageSrc =
+		room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl, 24, 24, 'crop') ||
+		null;
+	if (imageSrc === null)
+		imageSrc = room.getAvatarUrl(mx.baseUrl, 24, 24, 'crop') || null;
 
-function Selector({
-  roomId, isDM, drawerPostie, onClick,
-}) {
-  const mx = initMatrix.matrixClient;
-  const noti = initMatrix.notifications;
-  const room = mx.getRoom(roomId);
+	const [isSelected, setIsSelected] = useState(
+		navigation.selectedRoomId === roomId
+	);
+	const [, forceUpdate] = useState({});
 
-  let imageSrc = room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl, 24, 24, 'crop') || null;
-  if (imageSrc === null) imageSrc = room.getAvatarUrl(mx.baseUrl, 24, 24, 'crop') || null;
+	function selectorChanged(selectedRoomId) {
+		setIsSelected(selectedRoomId === roomId);
+	}
+	function changeNotificationBadge() {
+		forceUpdate({});
+	}
 
-  const isMuted = noti.getNotiType(roomId) === cons.notifs.MUTE;
+	useEffect(() => {
+		drawerPostie.subscribe('selector-change', roomId, selectorChanged);
+		drawerPostie.subscribe('unread-change', roomId, changeNotificationBadge);
+		return () => {
+			drawerPostie.unsubscribe('selector-change', roomId);
+			drawerPostie.unsubscribe('unread-change', roomId);
+		};
+	}, []);
 
-  const [, forceUpdate] = useForceUpdate();
+	const openRoomOptions = (e) => {
+		e.preventDefault();
+		openReusableContextMenu(
+			'right',
+			getEventCords(e, '.room-selector'),
+			(closeMenu) => (
+				<RoomOptions roomId={roomId} afterOptionSelect={closeMenu} />
+			)
+		);
+	};
 
-  useEffect(() => {
-    const unSub1 = drawerPostie.subscribe('selector-change', roomId, forceUpdate);
-    const unSub2 = drawerPostie.subscribe('unread-change', roomId, forceUpdate);
-    return () => {
-      unSub1();
-      unSub2();
-    };
-  }, []);
+	const joinRuleToIconSrc = (joinRule) =>
+		({
+			restricted: () => (room.isSpaceRoom() ? SpaceIC : HashIC),
+			invite: () => (room.isSpaceRoom() ? SpaceLockIC : HashLockIC),
+			public: () => (room.isSpaceRoom() ? SpaceGlobeIC : HashGlobeIC),
+		}[joinRule]?.() || null);
 
-  const openOptions = (e) => {
-    e.preventDefault();
-    openReusableContextMenu(
-      'right',
-      getEventCords(e, '.room-selector'),
-      room.isSpaceRoom()
-        ? (closeMenu) => <SpaceOptions roomId={roomId} afterOptionSelect={closeMenu} />
-        : (closeMenu) => <RoomOptions roomId={roomId} afterOptionSelect={closeMenu} />,
-    );
-  };
+	if (room.isSpaceRoom()) {
+		return (
+			<RoomSelector
+				key={roomId}
+				name={room.name}
+				roomId={roomId}
+				iconSrc={joinRuleToIconSrc(room.getJoinRule())}
+				isUnread={noti.hasNoti(roomId)}
+				notificationCount={abbreviateNumber(noti.getTotalNoti(roomId))}
+				isAlert={noti.getHighlightNoti(roomId) !== 0}
+				onClick={onClick}
+				options={
+					<IconButton
+						size="extra-small"
+						variant="surface"
+						tooltip={
+							initMatrix.roomList.spaceShortcut.has(roomId)
+								? 'Unpin'
+								: 'Pin to sidebar'
+						}
+						tooltipPlacement="right"
+						src={
+							initMatrix.roomList.spaceShortcut.has(roomId)
+								? PinFilledIC
+								: PinIC
+						}
+						onClick={() => {
+							if (initMatrix.roomList.spaceShortcut.has(roomId))
+								deleteSpaceShortcut(roomId);
+							else createSpaceShortcut(roomId);
+							forceUpdate({});
+						}}
+					/>
+				}
+			/>
+		);
+	}
 
-  return (
-    <RoomSelector
-      key={roomId}
-      name={room.name}
-      roomId={roomId}
-      imageSrc={isDM ? imageSrc : null}
-      iconSrc={isDM ? null : joinRuleToIconSrc(room.getJoinRule(), room.isSpaceRoom())}
-      isSelected={navigation.selectedRoomId === roomId}
-      isMuted={isMuted}
-      isUnread={!isMuted && noti.hasNoti(roomId)}
-      notificationCount={abbreviateNumber(noti.getTotalNoti(roomId))}
-      isAlert={noti.getHighlightNoti(roomId) !== 0}
-      onClick={onClick}
-      onContextMenu={openOptions}
-      options={(
-        <IconButton
-          size="extra-small"
-          tooltip="Options"
-          tooltipPlacement="right"
-          src={VerticalMenuIC}
-          onClick={openOptions}
-        />
-      )}
-    />
-  );
+	return (
+		<RoomSelector
+			key={roomId}
+			name={room.name}
+			roomId={roomId}
+			imageSrc={isDM ? imageSrc : null}
+			iconSrc={isDM ? null : joinRuleToIconSrc(room.getJoinRule())}
+			isSelected={isSelected}
+			isUnread={noti.hasNoti(roomId)}
+			notificationCount={abbreviateNumber(noti.getTotalNoti(roomId))}
+			isAlert={noti.getHighlightNoti(roomId) !== 0}
+			onClick={onClick}
+			onContextMenu={openRoomOptions}
+			options={
+				<IconButton
+					size="extra-small"
+					tooltip="Options"
+					tooltipPlacement="right"
+					src={VerticalMenuIC}
+					onClick={openRoomOptions}
+				/>
+			}
+		/>
+	);
 }
 
 Selector.defaultProps = {
-  isDM: true,
+	isDM: true,
 };
 
 Selector.propTypes = {
-  roomId: PropTypes.string.isRequired,
-  isDM: PropTypes.bool,
-  drawerPostie: PropTypes.shape({}).isRequired,
-  onClick: PropTypes.func.isRequired,
+	roomId: PropTypes.string.isRequired,
+	isDM: PropTypes.bool,
+	drawerPostie: PropTypes.shape({}).isRequired,
+	onClick: PropTypes.func.isRequired,
 };
 
 export default Selector;
