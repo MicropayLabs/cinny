@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import './ViewSource.scss';
 
 import cons from '../../../client/state/cons';
 import navigation from '../../../client/state/navigation';

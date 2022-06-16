@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import './DeviceManage.scss';
 import dateFormat from 'dateformat';
 
 import initMatrix from '../../../client/initMatrix';

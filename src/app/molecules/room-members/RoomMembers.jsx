@@ -2,7 +2,6 @@ import React, {
   useState, useEffect, useCallback,
 } from 'react';
 import PropTypes from 'prop-types';
-import './RoomMembers.scss';
 
 import initMatrix from '../../../client/initMatrix';
 import colorMXID from '../../../util/colorMXID';
