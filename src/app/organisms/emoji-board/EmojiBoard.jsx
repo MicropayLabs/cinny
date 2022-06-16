@@ -29,8 +29,6 @@ const BulbIC = '/res/ic/outlined/bulb.svg';
 const PeaceIC = '/res/ic/outlined/peace.svg';
 const FlagIC = '/res/ic/outlined/flag.svg';
 
-const ROW_EMOJIS_COUNT = 7;
-
 const EmojiGroup = React.memo(({ name, groupEmojis }) => {
 	function getEmojiBoard() {
 		const emojiBoard = [];

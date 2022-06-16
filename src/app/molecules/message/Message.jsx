@@ -44,8 +44,6 @@ const PencilIC = '/res/ic/outlined/pencil.svg';
 const TickMarkIC = '/res/ic/outlined/tick-mark.svg';
 const BinIC = '/res/ic/outlined/bin.svg';
 
-import { confirmDialog } from '../confirm-dialog/ConfirmDialog';
-
 function PlaceholderMessage() {
 	return (
 		<div className="ph-msg">

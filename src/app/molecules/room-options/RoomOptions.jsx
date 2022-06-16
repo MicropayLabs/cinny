@@ -15,8 +15,6 @@ const TickMarkIC = '/res/ic/outlined/tick-mark.svg';
 const AddUserIC = '/res/ic/outlined/add-user.svg';
 const LeaveArrowIC = '/res/ic/outlined/leave-arrow.svg';
 
-import { confirmDialog } from '../confirm-dialog/ConfirmDialog';
-
 function RoomOptions({ roomId, afterOptionSelect }) {
 	const mx = initMatrix.matrixClient;
 	const room = mx.getRoom(roomId);

@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-
 import colorMXID from '../../../util/colorMXID';
 
 import Text from '../../atoms/text/Text';

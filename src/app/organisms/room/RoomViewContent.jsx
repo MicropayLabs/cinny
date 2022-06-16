@@ -6,7 +6,6 @@ import React, {
 } from 'react';
 import PropTypes from 'prop-types';
 
-
 import dateFormat from 'dateformat';
 import { twemojify } from '../../../util/twemojify';
 
