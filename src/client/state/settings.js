@@ -4,9 +4,13 @@ import appDispatcher from '../dispatcher';
 import cons from './cons';
 
 function getSettings() {
-  const settings = localStorage.getItem('settings');
-  if (settings === null) return null;
-  return JSON.parse(settings);
+  if (typeof window !== 'undefined') {
+    const settings = localStorage.getItem('settings');
+    if (settings !== null) {
+      return JSON.parse(settings);
+    }
+  }
+  return null;
 }
 
 function setSettings(key, value) {
@@ -31,7 +35,7 @@ class Settings extends EventEmitter {
     this._showNotifications = this.getShowNotifications();
     this.isNotificationSounds = this.getIsNotificationSounds();
 
-    this.isTouchScreenDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || (navigator.msMaxTouchPoints > 0);
+    this.isTouchScreenDevice = this.getIsTouchScreenDevice();
   }
 
   getThemeIndex() {
@@ -86,7 +90,9 @@ class Settings extends EventEmitter {
   }
 
   getHideMembershipEvents() {
-    if (typeof this.hideMembershipEvents === 'boolean') return this.hideMembershipEvents;
+    if (typeof this.hideMembershipEvents === 'boolean') {
+      return this.hideMembershipEvents;
+    }
 
     const settings = getSettings();
     if (settings === null) return false;
@@ -95,7 +101,9 @@ class Settings extends EventEmitter {
   }
 
   getHideNickAvatarEvents() {
-    if (typeof this.hideNickAvatarEvents === 'boolean') return this.hideNickAvatarEvents;
+    if (typeof this.hideNickAvatarEvents === 'boolean') {
+      return this.hideNickAvatarEvents;
+    }
 
     const settings = getSettings();
     if (settings === null) return true;
@@ -118,7 +126,9 @@ class Settings extends EventEmitter {
   }
 
   getShowNotifications() {
-    if (typeof this._showNotifications === 'boolean') return this._showNotifications;
+    if (typeof this._showNotifications === 'boolean') {
+      return this._showNotifications;
+    }
 
     const settings = getSettings();
     if (settings === null) return true;
@@ -127,12 +137,23 @@ class Settings extends EventEmitter {
   }
 
   getIsNotificationSounds() {
-    if (typeof this.isNotificationSounds === 'boolean') return this.isNotificationSounds;
+    if (typeof this.isNotificationSounds === 'boolean') {
+      return this.isNotificationSounds;
+    }
 
     const settings = getSettings();
     if (settings === null) return true;
     if (typeof settings.isNotificationSounds === 'undefined') return true;
     return settings.isNotificationSounds;
+  }
+
+  getIsTouchScreenDevice() {
+    if (typeof window !== 'undefined') {
+      return 'ontouchstart' in window
+        || navigator.maxTouchPoints > 0
+        || navigator.msMaxTouchPoints > 0;
+    }
+    return false;
   }
 
   setter(action) {
@@ -143,7 +164,10 @@ class Settings extends EventEmitter {
         setSettings('useSystemTheme', this.useSystemTheme);
         this.setTheme(this.themeIndex);
 
-        this.emit(cons.events.settings.SYSTEM_THEME_TOGGLED, this.useSystemTheme);
+        this.emit(
+          cons.events.settings.SYSTEM_THEME_TOGGLED,
+          this.useSystemTheme,
+        );
       },
       [cons.actions.settings.TOGGLE_MARKDOWN]: () => {
         this.isMarkdown = !this.isMarkdown;
@@ -153,17 +177,26 @@ class Settings extends EventEmitter {
       [cons.actions.settings.TOGGLE_PEOPLE_DRAWER]: () => {
         this.isPeopleDrawer = !this.isPeopleDrawer;
         setSettings('isPeopleDrawer', this.isPeopleDrawer);
-        this.emit(cons.events.settings.PEOPLE_DRAWER_TOGGLED, this.isPeopleDrawer);
+        this.emit(
+          cons.events.settings.PEOPLE_DRAWER_TOGGLED,
+          this.isPeopleDrawer,
+        );
       },
       [cons.actions.settings.TOGGLE_MEMBERSHIP_EVENT]: () => {
         this.hideMembershipEvents = !this.hideMembershipEvents;
         setSettings('hideMembershipEvents', this.hideMembershipEvents);
-        this.emit(cons.events.settings.MEMBERSHIP_EVENTS_TOGGLED, this.hideMembershipEvents);
+        this.emit(
+          cons.events.settings.MEMBERSHIP_EVENTS_TOGGLED,
+          this.hideMembershipEvents,
+        );
       },
       [cons.actions.settings.TOGGLE_NICKAVATAR_EVENT]: () => {
         this.hideNickAvatarEvents = !this.hideNickAvatarEvents;
         setSettings('hideNickAvatarEvents', this.hideNickAvatarEvents);
-        this.emit(cons.events.settings.NICKAVATAR_EVENTS_TOGGLED, this.hideNickAvatarEvents);
+        this.emit(
+          cons.events.settings.NICKAVATAR_EVENTS_TOGGLED,
+          this.hideNickAvatarEvents,
+        );
       },
       [cons.actions.settings.TOGGLE_NOTIFICATIONS]: async () => {
         if (window.Notification?.permission !== 'granted') {
@@ -172,12 +205,18 @@ class Settings extends EventEmitter {
           this._showNotifications = !this._showNotifications;
         }
         setSettings('showNotifications', this._showNotifications);
-        this.emit(cons.events.settings.NOTIFICATIONS_TOGGLED, this._showNotifications);
+        this.emit(
+          cons.events.settings.NOTIFICATIONS_TOGGLED,
+          this._showNotifications,
+        );
       },
       [cons.actions.settings.TOGGLE_NOTIFICATION_SOUNDS]: () => {
         this.isNotificationSounds = !this.isNotificationSounds;
         setSettings('isNotificationSounds', this.isNotificationSounds);
-        this.emit(cons.events.settings.NOTIFICATION_SOUNDS_TOGGLED, this.isNotificationSounds);
+        this.emit(
+          cons.events.settings.NOTIFICATION_SOUNDS_TOGGLED,
+          this.isNotificationSounds,
+        );
       },
     };
 
